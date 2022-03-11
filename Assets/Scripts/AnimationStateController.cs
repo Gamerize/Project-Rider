@@ -15,17 +15,17 @@ public class AnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("w"))
+        if (Input.GetKey("w") || Input.GetKey("s") || Input.GetKey("a") || Input.GetKey("d"))
         {
             animator.SetBool("IsRunning", true);
         }
 
-        if (!Input.GetKey("w"))
+        if (!Input.GetKey("w") && !Input.GetKey("s") && !Input.GetKey("a") && !Input.GetKey("d"))
         {
             animator.SetBool("IsRunning", false);
         }
 
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             animator.SetBool("IsAttacking", true);
         }
@@ -43,6 +43,16 @@ public class AnimationStateController : MonoBehaviour
         if (!Input.GetKey("e"))
         {
             animator.SetBool("FinisherTime", false);
+        }
+
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.UpArrow))
+        {
+            animator.SetBool("IsChanging", true);
+        }
+
+        if (!Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.UpArrow))
+        {
+            animator.SetBool("IsChanging", false);
         }
     }
 }
