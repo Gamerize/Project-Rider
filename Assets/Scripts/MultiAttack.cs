@@ -19,15 +19,15 @@ public class MultiAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Punching"))
         {
             animator.SetBool("Attack1", false);       
         }
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
+        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Punching (1)"))
         {
             animator.SetBool("Attack2", false);
         }
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
+        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Mma Kick"))
         {
             animator.SetBool("Attack3", false);
             m_ClickedTimes = 0;
@@ -56,12 +56,12 @@ public class MultiAttack : MonoBehaviour
         }
         m_ClickedTimes = Mathf.Clamp(m_ClickedTimes, 0, 3);
 
-        if (m_ClickedTimes >= 2 && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (m_ClickedTimes >= 2 && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Punching"))
         {
             animator.SetBool("Attack1", false);
             animator.SetBool("Attack2", true);
         }
-        if (m_ClickedTimes >= 3 && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
+        if (m_ClickedTimes >= 3 && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && animator.GetCurrentAnimatorStateInfo(0).IsName("Punching (1)"))
         {
             animator.SetBool("Attack2", false);
             animator.SetBool("Attack3", true);

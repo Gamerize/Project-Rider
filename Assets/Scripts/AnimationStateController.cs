@@ -25,15 +25,15 @@ public class AnimationStateController : MonoBehaviour
             animator.SetBool("IsRunning", false);
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            animator.SetBool("IsAttacking", true);
-        }
+        //if (Input.GetMouseButton(0))
+        //{
+        //    animator.SetBool("IsAttacking", true);
+        //}
 
-        if (!Input.GetMouseButton(0))
-        {
-            animator.SetBool("IsAttacking", false);
-        }
+        //if (!Input.GetMouseButton(0))
+        //{
+        //    animator.SetBool("IsAttacking", false);
+        //}
 
         if (Input.GetKey("e"))
         {

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FormChanger : MonoBehaviour
 {
     [SerializeField] GameObject[] m_form;
+    public TextMeshProUGUI m_FormText;
 
     // Start is called before the first frame update
     void Start()
@@ -12,6 +14,7 @@ public class FormChanger : MonoBehaviour
         m_form[0].SetActive(true);
         m_form[1].SetActive(false);
         m_form[2].SetActive(false);
+        m_FormText.text = "Multi Form";
     }
 
     // Update is called once per frame
@@ -23,18 +26,21 @@ public class FormChanger : MonoBehaviour
             m_form[0].SetActive(false);
             m_form[1].SetActive(true);
             m_form[2].SetActive(false);
+            m_FormText.text = "Caliber Form";
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             m_form[0].SetActive(false);
             m_form[1].SetActive(false);
             m_form[2].SetActive(true);
+            m_FormText.text = "Sparrow Form";
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
             m_form[0].SetActive(true);
             m_form[1].SetActive(false);
             m_form[2].SetActive(false);
+            m_FormText.text = "Multi Form";
         }
     }
 }
