@@ -1,43 +1,56 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    private float Speed = 10f;
-    private float rotationSpeed;
+    [SerializeField] private InputActionReference m_MovementControls;
+    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float gravityValue = -9.81f;
 
-    // Update is called once per frame
+    private CharacterController controller;
+    private Vector3 playerVelocity;
+    private bool groundedPlayer;
+    private Transform MainCamera;
+
+
+    private void OnEnable()
+    {
+        m_MovementControls.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        m_MovementControls.action.Disable();
+    }
+
+    private void Start()
+    {
+        controller = gameObject.GetComponent<CharacterController>();
+    }
+
     void Update()
     {
-        float horizontalmovement = Input.GetAxis("Horizontal");
-        float verticalmovement = Input.GetAxis("Vertical");
-
-        Vector3 movementDirection = new Vector3(horizontalmovement, 0, verticalmovement);
-        movementDirection.Normalize();
-
-        if(movementDirection != Vector3.zero)
+        groundedPlayer = controller.isGrounded;
+        if (groundedPlayer && playerVelocity.y < 0)
         {
-            transform.forward = movementDirection;
+            playerVelocity.y = 0f;
         }
 
-        transform.Translate(movementDirection * rotationSpeed * Time.deltaTime);
+        Vector2 movement = m_MovementControls.action.ReadValue<Vector2>();
+        Vector3 move = new Vector3(movement.x, 0, movement.y);
+        move = MainCamera.forward * move.z + MainCamera.right * move.x;
+        move.y = 0f;
+        controller.Move(move * Time.deltaTime * playerSpeed);
 
-        if (Input.GetKey(KeyCode.W) && !Input.GetMouseButton(0)) 
+        if (move != Vector3.zero)
         {
-            transform.Translate(0f, 0f, Time.deltaTime * Speed);
+            gameObject.transform.forward = move;
         }
-        if (Input.GetKey(KeyCode.S) && !Input.GetMouseButton(0))
-        {
-            transform.Translate(0f, 0f, Time.deltaTime * -Speed);
-        }
-        if (Input.GetKey(KeyCode.A) && !Input.GetMouseButton(0))
-        {
-            transform.Translate(Time.deltaTime * -Speed, 0f, 0f);
-        }
-        if (Input.GetKey(KeyCode.D) && !Input.GetMouseButton(0))
-        {
-            transform.Translate(Time.deltaTime * Speed, 0f, 0f);
-        }
+
+        // Changes the height position of the player..
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        controller.Move(playerVelocity * Time.deltaTime);
     }
+
 }
