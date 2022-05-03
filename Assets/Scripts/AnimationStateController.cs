@@ -1,58 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AnimationStateController : MonoBehaviour
 {
     private Animator animator;
 
+    [SerializeField]
+    private InputActionReference movementControl;
+
+    int isRunningHash;
+    int isChangingHash;
+
+    PlayerController controller;
+
+    Vector2 currentMovement;
+    bool movementPressed;
+
+    private void Awake()
+    {
+        controller = new PlayerController();
+
+        movementControl.action.performed += ctx =>
+        {
+            currentMovement = ctx.ReadValue<Vector2>();
+            movementPressed = currentMovement.x != 0 || currentMovement.y != 0;
+        };
+    }
+
+    private void OnEnable()
+    {
+        movementControl.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        movementControl.action.Disable();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
+
+        isRunningHash = Animator.StringToHash("IsRunning");
+        isChangingHash = Animator.StringToHash("IsChanging");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("w") || Input.GetKey("s") || Input.GetKey("a") || Input.GetKey("d"))
+        HandleMovement();
+    }
+
+    void HandleMovement()
+    {
+        bool isRunning = animator.GetBool(isRunningHash);
+
+        if(movementPressed && !isRunning)
         {
-            animator.SetBool("IsRunning", true);
+            animator.SetBool(isRunningHash, true);
         }
 
-        if (!Input.GetKey("w") && !Input.GetKey("s") && !Input.GetKey("a") && !Input.GetKey("d"))
+        if(!movementPressed && isRunning)
         {
-            animator.SetBool("IsRunning", false);
-        }
-
-        //if (Input.GetMouseButton(0))
-        //{
-        //    animator.SetBool("IsAttacking", true);
-        //}
-
-        //if (!Input.GetMouseButton(0))
-        //{
-        //    animator.SetBool("IsAttacking", false);
-        //}
-
-        if (Input.GetKey("e"))
-        {
-            animator.SetBool("FinisherTime", true);
-        }
-
-        if (!Input.GetKey("e"))
-        {
-            animator.SetBool("FinisherTime", false);
-        }
-
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.UpArrow))
-        {
-            animator.SetBool("IsChanging", true);
-        }
-
-        if (!Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.UpArrow))
-        {
-            animator.SetBool("IsChanging", false);
+            animator.SetBool(isRunningHash, false);
         }
     }
 }
